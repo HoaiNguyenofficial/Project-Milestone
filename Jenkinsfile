@@ -12,7 +12,26 @@ pipeline {
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
                 
             }
-        }      
+        }
+
+  stage('Code Security'){
+                        parallel{
+                            stage('OWASP Dependency-Check Vulnerabilities'){
+                                steps{
+                                      sh 'mvn dependency-check:check'
+                                      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+                                }
+                            }
+                            stage('Sonacube'){
+                                  steps{
+                                       withSonarQubeEnv('SonarQube') {
+                                       sh 'mvn sonar:sonar'
+                                        }
+                                  }
+                            }
+                        }
+         }
+
    stage("Publish to Nexus Repository Manager") {
 
             steps {
