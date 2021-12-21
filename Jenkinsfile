@@ -46,7 +46,7 @@ pipeline {
 
                             repository: 'Milestone',
 
-                            credentialsId: 'nexus',
+                            credentialsId: 'Nexus',
 
                             artifacts: [
 
