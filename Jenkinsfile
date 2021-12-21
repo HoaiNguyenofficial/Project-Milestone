@@ -18,7 +18,7 @@ pipeline {
                         parallel{
                             stage('OWASP Dependency-Check Vulnerabilities'){
                                 steps{
-                                      sh 'mvn dependency-check:check'
+                                      sh 'mvn DependencyCheck:check'
                                       dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
                                 }
                             }
