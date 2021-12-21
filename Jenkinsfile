@@ -12,76 +12,74 @@ pipeline {
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
                 
             }
-        }  
-    }
-}     
-//    stage("Publish to Nexus Repository Manager") {
+        }      
+   stage("Publish to Nexus Repository Manager") {
 
-//             steps {
+            steps {
 
-//                 script {
+                script {
 
-//                     pom = readMavenPom file: "pom.xml";
+                    pom = readMavenPom file: "pom.xml";
 
-//                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
 
-//                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
 
-//                     artifactPath = filesByGlob[0].path;
+                    artifactPath = filesByGlob[0].path;
 
-//                     artifactExists = fileExists artifactPath;
+                    artifactExists = fileExists artifactPath;
 
-//                     if(artifactExists) {
+                    if(artifactExists) {
 
-//                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-//                         nexusArtifactUploader(
-//                             nexusVersion: 'nexus3',
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
                             
-//                             protocol: 'http',
+                            protocol: 'http',
 
-//                             nexusUrl: '20.212.184.136:8081',
+                            nexusUrl: '20.212.184.136:8081',
 
-//                             groupId: 'pom.com.mycompany.app',
+                            groupId: 'pom.com.mycompany.app',
 
-//                             version: 'pom.1.0-SNAPSHOT',
+                            version: 'pom.1.0-SNAPSHOT',
 
-//                             repository: 'repository/Milestone',
+                            repository: 'repository/Milestone',
 
-//                             credentialsId: 'nexus',
+                            credentialsId: 'nexus',
 
-//                             artifacts: [
+                            artifacts: [
 
-//                                 [artifactId: 'pom.my-app',
+                                [artifactId: 'pom.my-app',
 
-//                                 classifier: '',
+                                classifier: '',
 
-//                                 file: artifactPath,
+                                file: artifactPath,
 
-//                                 type: pom.packaging],
+                                type: pom.packaging],
 
-//                                 [artifactId: 'pom.my-app',
+                                [artifactId: 'pom.my-app',
 
-//                                 classifier: '',
+                                classifier: '',
 
-//                                 file: "pom.xml",
+                                file: "pom.xml",
 
-//                                 type: "pom"]
+                                type: "pom"]
 
-//                             ]
+                            ]
 
-//                         );
+                        );
 
-//                     } else {
+                    } else {
 
-//                         error "*** File: ${artifactPath}, could not be found";
+                        error "*** File: ${artifactPath}, could not be found";
 
-//                     }
+                    }
 
-//                 }
+                }
 
-//             }
+            }
 
-//         }
-//     }
-
+        }
+    }
+}
