@@ -12,7 +12,15 @@ pipeline {
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
                 
             }
-        }  
+        } 
+
+        stage('Sonacube'){
+            steps{
+                 withSonarQubeEnv('sonarqube_server') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }     
 
    stage("Publish to Nexus Repository Manager") {
 
