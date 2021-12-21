@@ -14,22 +14,33 @@ pipeline {
             }
         } 
         
-        stage("sonar quality check"){
-            steps{
-                script{
-                withSonarQubeEnv('SonarQube') { 
-                    sh "mvn sonar:sonar"
-                }
-                timeout(time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if (qg.status != 'OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                    }
-                }
-		        sh "mvn clean install"
-                }
+        stage ('Source Composition Analysis') {
+            steps {
+                sh 'rm owasp* || true'
+                sh 'wget "https://raw.githubusercontent.com/cehkunal/webapp/master/owasp-dependency-check.sh" '
+                sh 'chmod +x owasp-dependency-check.sh'
+                sh 'bash owasp-dependency-check.sh'
+                sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
             }
-        }             
+        }
+
+
+        // stage("sonar quality check"){
+        //     steps{
+        //         script{
+        //         withSonarQubeEnv('SonarQube') { 
+        //             sh "mvn sonar:sonar"
+        //         }
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             def qg = waitForQualityGate()
+        //             if (qg.status != 'OK') {
+        //                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        //             }
+        //         }
+		//         sh "mvn clean install"
+        //         }
+        //     }
+        // }             
 
    stage("Publish to Nexus Repository Manager") {
 
