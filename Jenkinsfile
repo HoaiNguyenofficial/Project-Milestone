@@ -15,10 +15,10 @@ pipeline {
         } 
         
         stage('sonar-scanner analysis') {
-          def sonarqubeScannerHome = tool name: 'SonarQubeScanner-4.6.2', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-          withCredentials([string(credentialsId: 'SonarQube', variable: 'sonarLogin')]) {
-          sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://20.212.184.136:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
-          }
+            def sonarqubeScannerHome = tool name: 'SonarQubeScanner-4.6.2', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+            withCredentials([string(credentialsId: 'SonarQube', variable: 'sonarLogin')]) {
+                sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://20.212.184.136:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
+            }
         }  
 
         // stage("sonar quality check"){
