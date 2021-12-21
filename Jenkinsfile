@@ -12,35 +12,7 @@ pipeline {
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
                 
             }
-        }
-    }    
-
-    stages {
-
-        stage("sonar quality check"){
-            agent {
-                docker {
-                    image 'openjdk:11'
-                }
-            }
-            steps{
-                script{
-                    withSonarQubeEnv(credentialsId: 'Sonar-token') {
-                            sh 'chmod +x gradlew'
-                            sh './gradlew sonarqube'
-                    }
-
-                    timeout(time: 1, unit: 'HOURS') {
-                      def qg = waitForQualityGate()
-                      if (qg.status != 'OK') {
-                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                      }
-                    }
-
-                }  
-            }
-        }
-    }
+        }  
 
    stage("Publish to Nexus Repository Manager") {
 
@@ -73,9 +45,9 @@ pipeline {
 
                             version: 'pom.1.0-SNAPSHOT',
 
-                            repository: 'Milestone',
+                            repository: 'repository/Milestone',
 
-                            credentialsId: 'Nexus',
+                            credentialsId: 'nexus',
 
                             artifacts: [
 
@@ -112,3 +84,4 @@ pipeline {
         }
     }
 
+}
