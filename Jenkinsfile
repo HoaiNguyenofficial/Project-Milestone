@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-    stages{
+    stages {
         stage("sonar quality check"){
             agent {
                 docker {
@@ -39,6 +39,7 @@ pipeline {
             }
         }
     }
+
    stage("Publish to Nexus Repository Manager") {
 
             steps {
