@@ -8,7 +8,7 @@ pipeline {
 
         stage('Build Maven') {
             steps{
-                 git branch: 'master', credentialsId: 'devopshint', url: 'https://github.com/HoaiNguyenofficial/DevSecOpsMilestone'
+                 git branch: 'master', credentialsId: 'Github-token', url: 'https://github.com/HoaiNguyenofficial/DevSecOpsMilestone'
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
                 
             }
