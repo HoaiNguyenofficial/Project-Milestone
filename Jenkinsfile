@@ -14,24 +14,31 @@ pipeline {
             }
         }
 
-  stage('Code Security'){
-                        parallel{
-                            stage('OWASP Dependency-Check Vulnerabilities'){
-                                steps{
-                                      sh 'mvn DependencyCheck:check'
-                                      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-                                }
-                            }
-                            stage('Sonacube'){
-                                  steps{
-                                       withSonarQubeEnv('SonarQube') {
-                                       sh 'mvn sonar:sonar'
-                                        }
-                                  }
-                            }
-                        }
-         }
+    stages{
+        stage("sonar quality check"){
+            agent {
+                docker {
+                    image 'openjdk:11'
+                }
+            }
+            steps{
+                script{
+                    withSonarQubeEnv(credentialsId: 'Sonar-token') {
+                            sh 'chmod +x gradlew'
+                            sh './gradlew sonarqube'
+                    }
 
+                    timeout(time: 1, unit: 'HOURS') {
+                      def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
+                    }
+
+                }  
+            }
+        }
+    }
    stage("Publish to Nexus Repository Manager") {
 
             steps {
