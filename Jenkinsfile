@@ -13,9 +13,10 @@ pipeline {
                 
             }
         }
+    }    
 
     stages {
-        
+
         stage("sonar quality check"){
             agent {
                 docker {
