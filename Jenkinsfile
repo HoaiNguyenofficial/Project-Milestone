@@ -44,7 +44,7 @@ pipeline {
 
                             version: 'pom.1.0-SNAPSHOT',
 
-                            repository: 'repository/Milestone',
+                            repository: 'Milestone',
 
                             credentialsId: 'nexus',
 
